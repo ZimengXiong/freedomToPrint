@@ -1,3 +1,5 @@
+<img src="public/favicon.svg" width="128"/>
+
 # Freedom to Print
 
 Campaign site for tracking state legislation affecting 3D printing/CNC workflows, sharing bill explainers, and helping users generate outreach messages.

@@ -449,9 +449,12 @@ export default function App() {
     <div className="flex flex-col min-h-screen bg-slate-50 text-slate-900 font-sans text-sm">
       <nav className="bg-slate-900 text-white px-6 py-3 flex flex-col lg:flex-row justify-between lg:items-center relative z-50 shadow-md">
         <div className="flex items-center justify-between w-full lg:w-auto">
-          <div className="flex items-center space-x-2 lg:mr-6">
-            <img src="/favicon.svg" className="w-6 h-6" alt="Freedom to Print Logo" />
-            <span className="font-bold tracking-tight whitespace-nowrap">Freedom <span className="text-red-500">to Print</span></span>
+          <div className="flex items-center lg:mr-6">
+            <img src="/favicon.svg" className="h-8 md:h-10 w-auto" alt="Freedom to Print Logo" />
+            <div className="flex flex-col ml-1 leading-[0.8] uppercase tracking-tighter justify-center h-8 md:h-10">
+              <span className="font-black text-[16px] md:text-[20px] text-white">Freedom</span>
+              <span className="font-black text-[14px] md:text-[17px] text-red-500 mt-0.5">to Print</span>
+            </div>
           </div>
           <div className="flex lg:hidden items-center space-x-4">
             <a

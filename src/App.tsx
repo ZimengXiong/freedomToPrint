@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { ChevronRight, FileCode, AlertCircle, ExternalLink, ArrowLeft, Lock, Gavel, Eye, Github } from 'lucide-react';
+import { Analytics } from "@vercel/analytics/react";
 
 const TRACKER_DATA = [
   {
@@ -496,6 +497,7 @@ export default function App() {
           </p>
         </div>
       </footer>
+      <Analytics />
     </div>
   );
 }

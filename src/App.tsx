@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
-import { ChevronRight, FileCode, AlertCircle, ExternalLink, ArrowLeft, Lock, Gavel, Eye, Github } from 'lucide-react';
+import { ChevronRight, FileCode, AlertCircle, ExternalLink, ArrowLeft, Lock, Gavel, Eye, Github, Menu, X } from 'lucide-react';
 
 const TRACKER_DATA = [
   {
@@ -424,6 +424,7 @@ export default function App() {
 
   const [currentView, setCurrentView] = useState(getInitialRoute().view);
   const [currentSubView, setCurrentSubView] = useState(getInitialRoute().subView);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -436,6 +437,7 @@ export default function App() {
   }, []);
 
   const navigate = (view: string, subView?: string) => {
+    setIsMobileMenuOpen(false);
     if (subView) {
       window.location.hash = `/${view}/${encodeURIComponent(subView)}`;
     } else {
@@ -445,25 +447,42 @@ export default function App() {
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 text-slate-900 font-sans text-sm">
-      <nav className="bg-slate-900 text-white px-6 py-2 flex flex-col md:flex-row justify-between md:items-center">
-        <div className="flex items-center space-x-6">
-          <div className="flex items-center space-x-2">
+      <nav className="bg-slate-900 text-white px-6 py-3 flex flex-col lg:flex-row justify-between lg:items-center relative z-50 shadow-md">
+        <div className="flex items-center justify-between w-full lg:w-auto">
+          <div className="flex items-center space-x-2 lg:mr-6">
             <img src="/favicon.svg" className="w-6 h-6" alt="Freedom to Print Logo" />
-            <span className="font-bold tracking-tight">Freedom <span className="text-red-500">to Print</span></span>
+            <span className="font-bold tracking-tight whitespace-nowrap">Freedom <span className="text-red-500">to Print</span></span>
           </div>
-          <div className="hidden lg:flex space-x-6 text-xs uppercase tracking-wide overflow-x-auto">
-            <button onClick={() => navigate('overview')} className={`whitespace-nowrap hover:text-slate-300 transition-colors ${currentView === 'overview' ? 'text-white border-b-2 border-white font-bold' : 'text-slate-400'}`}>Overview</button>
-            <button onClick={() => navigate('tracker')} className={`whitespace-nowrap hover:text-slate-300 transition-colors ${currentView === 'tracker' ? 'text-white border-b-2 border-white font-bold' : 'text-slate-400'}`}>Legislation</button>
-            <button onClick={() => navigate('action')} className={`whitespace-nowrap hover:text-slate-300 transition-colors ${currentView === 'action' ? 'text-white border-b-2 border-white font-bold' : 'text-slate-400'}`}>Take Action</button>
-            <button onClick={() => navigate('why')} className={`whitespace-nowrap hover:text-slate-300 transition-colors ${currentView === 'why' ? 'text-white border-b-2 border-white font-bold' : 'text-slate-400'}`}>Why It Won't Work</button>
-            <button onClick={() => navigate('videos')} className={`whitespace-nowrap hover:text-slate-300 transition-colors ${currentView === 'videos' ? 'text-white border-b-2 border-white font-bold' : 'text-slate-400'}`}>Videos</button>
-            <button onClick={() => navigate('voices')} className={`whitespace-nowrap hover:text-slate-300 transition-colors ${currentView === 'voices' ? 'text-white border-b-2 border-white font-bold' : 'text-slate-400'}`}>Voices</button>
-            <button onClick={() => navigate('explainers')} className={`whitespace-nowrap hover:text-slate-300 transition-colors ${currentView === 'explainers' ? 'text-white border-b-2 border-white font-bold' : 'text-slate-400'}`}>Policy & Bill Briefs</button>
+          <div className="flex lg:hidden items-center space-x-4">
+            <a
+              href="http://github.com/zimengxiong/freedomtoprint"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-400 hover:text-white transition-colors"
+            >
+              <Github className="w-5 h-5" />
+            </a>
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-slate-400 hover:text-white transition-colors"
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
         </div>
-        <div className="flex items-center space-x-4 mt-2 md:mt-0">
-          <div className="flex lg:hidden space-x-6 text-xs uppercase tracking-wide overflow-x-auto">
-          </div>
+
+        <div className={`${isMobileMenuOpen ? 'flex' : 'hidden'} lg:flex flex-col lg:flex-row w-full lg:w-auto lg:space-x-6 space-y-4 lg:space-y-0 text-xs sm:text-sm lg:text-xs uppercase tracking-wide mt-6 lg:mt-0 pb-2 lg:pb-0`}>
+          <button onClick={() => navigate('overview')} className={`text-left whitespace-nowrap hover:text-slate-300 transition-colors ${currentView === 'overview' ? 'text-white border-l-2 lg:border-l-0 lg:border-b-2 border-white pl-3 lg:pl-0 lg:pb-1 font-bold' : 'text-slate-400 pl-3 lg:pl-0 lg:pb-1'}`}>Overview</button>
+          <button onClick={() => navigate('tracker')} className={`text-left whitespace-nowrap hover:text-slate-300 transition-colors ${currentView === 'tracker' ? 'text-white border-l-2 lg:border-l-0 lg:border-b-2 border-white pl-3 lg:pl-0 lg:pb-1 font-bold' : 'text-slate-400 pl-3 lg:pl-0 lg:pb-1'}`}>Legislation</button>
+          <button onClick={() => navigate('action')} className={`text-left whitespace-nowrap hover:text-slate-300 transition-colors ${currentView === 'action' ? 'text-white border-l-2 lg:border-l-0 lg:border-b-2 border-white pl-3 lg:pl-0 lg:pb-1 font-bold' : 'text-slate-400 pl-3 lg:pl-0 lg:pb-1'}`}>Take Action</button>
+          <button onClick={() => navigate('why')} className={`text-left whitespace-nowrap hover:text-slate-300 transition-colors ${currentView === 'why' ? 'text-white border-l-2 lg:border-l-0 lg:border-b-2 border-white pl-3 lg:pl-0 lg:pb-1 font-bold' : 'text-slate-400 pl-3 lg:pl-0 lg:pb-1'}`}>Why It Won't Work</button>
+          <button onClick={() => navigate('videos')} className={`text-left whitespace-nowrap hover:text-slate-300 transition-colors ${currentView === 'videos' ? 'text-white border-l-2 lg:border-l-0 lg:border-b-2 border-white pl-3 lg:pl-0 lg:pb-1 font-bold' : 'text-slate-400 pl-3 lg:pl-0 lg:pb-1'}`}>Videos</button>
+          <button onClick={() => navigate('voices')} className={`text-left whitespace-nowrap hover:text-slate-300 transition-colors ${currentView === 'voices' ? 'text-white border-l-2 lg:border-l-0 lg:border-b-2 border-white pl-3 lg:pl-0 lg:pb-1 font-bold' : 'text-slate-400 pl-3 lg:pl-0 lg:pb-1'}`}>Voices</button>
+          <button onClick={() => navigate('explainers')} className={`text-left whitespace-nowrap hover:text-slate-300 transition-colors ${currentView === 'explainers' ? 'text-white border-l-2 lg:border-l-0 lg:border-b-2 border-white pl-3 lg:pl-0 lg:pb-1 font-bold' : 'text-slate-400 pl-3 lg:pl-0 lg:pb-1'}`}>Policy & Bill Briefs</button>
+        </div>
+
+        <div className="hidden lg:flex items-center space-x-4">
           <a
             href="http://github.com/zimengxiong/freedomtoprint"
             target="_blank"
@@ -471,7 +490,7 @@ export default function App() {
             className="flex items-center space-x-1 text-slate-400 hover:text-white transition-colors text-[10px] uppercase tracking-wider"
           >
             <Github className="w-3 h-3" />
-            <span>Suggest Changes</span>
+            <span>Contribute</span>
           </a>
         </div>
       </nav>
@@ -509,7 +528,7 @@ function Overview({ navigate }: { navigate: (view: string) => void }) {
   const mixedVoices = useMemo(() => shuffledVoices(voicesData ?? []), [voicesData]);
   return (
     <div className="space-y-6 pb-8">
-      <section className="relative h-[460px] flex items-center justify-center overflow-hidden border-b-8 border-red-600 bg-black -mx-6 -mt-2">
+      <section className="relative min-h-[460px] h-auto py-16 lg:py-0 flex items-center justify-center overflow-hidden border-b-8 border-red-600 bg-black -mx-6 -mt-2">
         <img
           src="/hero_defiant_printer.webp"
           className="absolute inset-0 w-full h-full object-cover opacity-50 contrast-125 saturate-50"
@@ -519,7 +538,7 @@ function Overview({ navigate }: { navigate: (view: string) => void }) {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)] opacity-60" />
 
         <div className="relative z-10 text-center px-6 max-w-5xl">
-          <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tighter uppercase leading-[0.85] italic">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-white mb-6 tracking-tighter uppercase leading-[0.85] italic">
             They want to take <br />
             <span className="text-red-600 underline decoration-white/20 underline-offset-8">your printer.</span>
           </h1>
@@ -660,9 +679,9 @@ function ShareStorySection() {
   };
 
   return (
-    <div className="bg-slate-900 text-white p-12 text-center space-y-6">
-      <h3 className="text-3xl font-black uppercase tracking-tighter italic">Your voice is missing.</h3>
-      <p className="text-slate-400 max-w-2xl mx-auto">Are you a maker, educator, or business owner? Tell us how these bills would affect your work.</p>
+    <div className="bg-slate-900 text-white p-8 md:p-12 text-center space-y-6">
+      <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter italic">Your voice is missing.</h3>
+      <p className="text-slate-400 max-w-2xl mx-auto text-sm md:text-base">Are you a maker, educator, or business owner? Tell us how these bills would affect your work.</p>
 
       {!showForm ? (
         <button
@@ -832,73 +851,98 @@ function Tracker() {
         <p className="text-slate-700">Monitoring state-level bills targeting additive manufacturing hardware and digital design files.</p>
       </header>
 
-      <div className="bg-white border border-slate-300 overflow-x-auto">
-        <table className="w-full text-left text-sm text-slate-800">
-          <thead className="bg-slate-100 border-b border-slate-300 text-slate-900 font-bold uppercase tracking-wider text-xs">
-            <tr>
-              <th className="px-4 py-3">State</th>
-              <th className="px-4 py-3">Bill</th>
-              <th className="px-4 py-3">Primary Sponsor</th>
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3">Target</th>
-              <th className="px-4 py-3">Mechanism</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-200">
-            {TRACKER_DATA.map((row, idx) => (
-              <tr key={idx} className="hover:bg-slate-50 transition-colors">
-                <td className="px-4 py-3 font-bold text-slate-900 align-top">{row.state}</td>
-                <td className="px-4 py-3 align-top flex flex-col space-y-2">
-                  {row.url ? (
-                    <a
-                      href={row.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-700 font-bold hover:text-blue-900 hover:underline inline-flex items-center gap-1"
-                    >
-                      {row.bill}
-                      <ExternalLink className="w-3 h-3 text-blue-500" />
-                    </a>
-                  ) : (
-                    <span className="font-bold">{row.bill}</span>
-                  )}
-                  {row.pdfUrl && (
-                    <a
-                      href={row.pdfUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[10px] uppercase tracking-wider font-bold bg-slate-100 text-slate-700 px-2 py-1 border border-slate-300 inline-block w-fit hover:bg-slate-200 transition-colors"
-                    >
-                      PDF
-                    </a>
-                  )}
-                </td>
-                <td className="px-4 py-3 align-top text-slate-700 font-medium">{row.sponsor || '—'}</td>
-                <td className="px-4 py-3 align-top">
-                  <span
-                    className={`inline-block whitespace-nowrap px-2 py-0.5 text-xs font-bold uppercase tracking-wide border ${row.status === 'PASSED HOUSE'
-                      ? 'bg-amber-50 text-amber-900 border-amber-300'
-                      : row.status === 'LAW'
-                        ? 'bg-emerald-50 text-emerald-900 border-emerald-300'
-                        : row.status === 'PASSED COMMITTEE'
-                          ? 'bg-orange-50 text-orange-900 border-orange-300'
-                          : row.status === 'STALLED'
-                            ? 'bg-slate-200 text-slate-900 border-slate-400'
-                            : 'bg-slate-100 text-slate-800 border-slate-300'
-                      }`}
+      <div className="bg-white border border-slate-300">
+        <div className="hidden md:grid md:grid-cols-12 bg-slate-100 border-b border-slate-300 text-slate-900 font-bold uppercase tracking-wider text-xs">
+          <div className="px-4 py-3 col-span-1">State</div>
+          <div className="px-4 py-3 col-span-2">Bill</div>
+          <div className="px-4 py-3 col-span-2">Primary Sponsor</div>
+          <div className="px-4 py-3 col-span-2">Status</div>
+          <div className="px-4 py-3 col-span-2">Target</div>
+          <div className="px-4 py-3 col-span-3">Mechanism</div>
+        </div>
+        <div className="divide-y divide-slate-200">
+          {TRACKER_DATA.map((row, idx) => (
+            <div key={idx} className="hover:bg-slate-50 transition-colors flex flex-col md:grid md:grid-cols-12 p-4 md:p-0 gap-y-3 md:gap-y-0 text-sm text-slate-800">
+              <div className="md:px-4 md:py-3 font-bold text-slate-900 flex justify-between items-center md:items-start md:col-span-1 border-b border-slate-200 md:border-b-0 pb-2 md:pb-0 mb-1 md:mb-0">
+                <span className="text-lg md:text-sm">{row.state}</span>
+                <span
+                  className={`md:hidden inline-block whitespace-nowrap px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide border ${row.status === 'PASSED HOUSE'
+                    ? 'bg-amber-50 text-amber-900 border-amber-300'
+                    : row.status === 'LAW'
+                      ? 'bg-emerald-50 text-emerald-900 border-emerald-300'
+                      : row.status === 'PASSED COMMITTEE'
+                        ? 'bg-orange-50 text-orange-900 border-orange-300'
+                        : row.status === 'STALLED'
+                          ? 'bg-slate-200 text-slate-900 border-slate-400'
+                          : 'bg-slate-100 text-slate-800 border-slate-300'
+                    }`}
+                >
+                  {row.status}
+                </span>
+              </div>
+
+              <div className="md:px-4 md:py-3 flex flex-col space-y-2 md:col-span-2">
+                <div className="md:hidden text-[10px] font-bold text-slate-500 uppercase tracking-wider">Bill</div>
+                {row.url ? (
+                  <a
+                    href={row.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-700 font-bold hover:text-blue-900 hover:underline inline-flex items-center gap-1 w-fit"
                   >
-                    {row.status}
-                  </span>
-                </td>
-                <td className="px-4 py-3 align-top font-medium">{row.category}</td>
-                <td className="px-4 py-3 align-top">
-                  <div className="font-bold mb-1 text-slate-900">{row.mechanism}</div>
-                  <div className="text-slate-700 leading-snug">{row.description}</div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                    {row.bill}
+                    <ExternalLink className="w-3 h-3 text-blue-500" />
+                  </a>
+                ) : (
+                  <span className="font-bold">{row.bill}</span>
+                )}
+                {row.pdfUrl && (
+                  <a
+                    href={row.pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[10px] uppercase tracking-wider font-bold bg-slate-100 text-slate-700 px-2 py-1 border border-slate-300 inline-block w-fit hover:bg-slate-200 transition-colors"
+                  >
+                    PDF
+                  </a>
+                )}
+              </div>
+
+              <div className="md:px-4 md:py-3 text-slate-700 font-medium md:col-span-2">
+                <div className="md:hidden text-[10px] font-bold text-slate-500 uppercase tracking-wider">Primary Sponsor</div>
+                {row.sponsor || '—'}
+              </div>
+
+              <div className="hidden md:block md:px-4 md:py-3 md:col-span-2">
+                <span
+                  className={`inline-block whitespace-nowrap px-2 py-0.5 text-xs font-bold uppercase tracking-wide border ${row.status === 'PASSED HOUSE'
+                    ? 'bg-amber-50 text-amber-900 border-amber-300'
+                    : row.status === 'LAW'
+                      ? 'bg-emerald-50 text-emerald-900 border-emerald-300'
+                      : row.status === 'PASSED COMMITTEE'
+                        ? 'bg-orange-50 text-orange-900 border-orange-300'
+                        : row.status === 'STALLED'
+                          ? 'bg-slate-200 text-slate-900 border-slate-400'
+                          : 'bg-slate-100 text-slate-800 border-slate-300'
+                    }`}
+                >
+                  {row.status}
+                </span>
+              </div>
+
+              <div className="md:px-4 md:py-3 font-medium md:col-span-2">
+                <div className="md:hidden text-[10px] font-bold text-slate-500 uppercase tracking-wider">Target</div>
+                {row.category}
+              </div>
+
+              <div className="md:px-4 md:py-3 md:col-span-3">
+                <div className="md:hidden text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Mechanism</div>
+                <div className="font-bold mb-1 text-slate-900">{row.mechanism}</div>
+                <div className="text-slate-700 leading-snug">{row.description}</div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -1047,9 +1091,9 @@ Thank you for your time.`;
         <p className="text-slate-700">Protect the future of open hardware and distributed manufacturing.</p>
       </header>
 
-      <div className="bg-red-600 text-white p-6 flex flex-col md:flex-row items-center justify-between shadow-2xl">
-        <div className="mb-4 md:mb-0">
-          <h3 className="text-xl font-black uppercase tracking-tight italic leading-none mb-1">Sign the Official Petition</h3>
+      <div className="bg-red-600 text-white p-6 flex flex-col md:flex-row items-center justify-between shadow-2xl space-y-4 md:space-y-0 text-center md:text-left">
+        <div>
+          <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight italic leading-none mb-1">Sign the Official Petition</h3>
           <p className="text-red-100 font-medium tracking-tight">Support the fight against Washington HB 2320 and similar tech-blocking mandates.</p>
         </div>
         <a
@@ -1184,10 +1228,10 @@ Thank you for your time.`;
                   className="w-full border border-slate-400 p-2 text-sm bg-white outline-none"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} className="w-full border border-slate-400 p-2 text-sm bg-white outline-none" />
-                <input type="text" placeholder="Profession (e.g. Educator, Engineer)" value={profession} onChange={(e) => setProfession(e.target.value)} className="w-full border border-slate-400 p-2 text-sm bg-white outline-none" />
-                <input type="text" placeholder="City" value={city === '[City]' ? '' : city} onChange={(e) => setCity(e.target.value)} className="w-full border border-slate-400 p-2 text-sm bg-white outline-none" />
+                <input type="text" placeholder="Profession (e.g. Educator)" value={profession} onChange={(e) => setProfession(e.target.value)} className="w-full border border-slate-400 p-2 text-sm bg-white outline-none" />
+                <input type="text" placeholder="City" value={city === '[City]' ? '' : city} onChange={(e) => setCity(e.target.value)} className="w-full border border-slate-400 p-2 text-sm bg-white outline-none md:col-span-2" />
               </div>
             </div>
 
@@ -1421,11 +1465,11 @@ function Explainers({ selectedBillKey, setSelectedBillKey }: { selectedBillKey: 
 
         <header className="border-b-2 border-slate-800 pb-4 mb-6">
           <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">{analysis.core_issue}</p>
-          <h2 className="text-3xl font-bold text-slate-900 mb-4">{analysis.title}</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">{analysis.title}</h2>
           <div className="bg-white border border-slate-300 p-4 font-bold text-slate-700 text-sm mb-4">
             {analysis.summary}
           </div>
-          <div className="flex space-x-4">
+          <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
             {analysis.url && (
               <a href={analysis.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-blue-700 hover:text-blue-900 hover:underline">
                 View Bill on State Website <ExternalLink className="w-3 h-3 ml-1" />

@@ -509,7 +509,7 @@ export default function App() {
       </main>
 
       <footer className="border-t border-slate-300 bg-white px-6 py-4 mt-4">
-        <div className="max-w-6xl mx-auto text-xs text-slate-600 space-y-2">
+        <div className="max-w-6xl text-left text-xs text-slate-600 space-y-2">
           <p>
             <span className="font-bold text-slate-800">Disclaimer:</span> This website is for informational and civic engagement purposes only and is not legal advice.
           </p>
@@ -518,6 +518,24 @@ export default function App() {
           </p>
           <p>
             Made with assistance from AI.
+          </p>
+          <p>
+            <span className="font-bold text-slate-800">Contact:</span>{' '}
+            <a
+              href="mailto:inbox@freedomtoprint.org"
+              className="text-slate-800 underline decoration-slate-500 hover:text-black"
+            >
+              inbox@freedomtoprint.org
+            </a>
+            {' '}or{' '}
+            <a
+              href="http://github.com/zimengxiong/freedomtoprint"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-800 underline decoration-slate-500 hover:text-black"
+            >
+              comment on GitHub
+            </a>
           </p>
         </div>
       </footer>

@@ -24,3 +24,5 @@ convex/*.js.map
 *.njsproj
 *.sln
 *.sw?
+.vercel
+.env*.local
